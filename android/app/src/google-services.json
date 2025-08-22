@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "501701108163",
+    "project_id": "vinculacion-202550",
+    "storage_bucket": "vinculacion-202550.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501701108163:android:61aa4a082e5f77cc54dd76",
+        "android_client_info": {
+          "package_name": "com.vinculacion_espesd.scholar_security"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjQPfth1uNumaKCQNOTQbN9TwNQ59yDLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

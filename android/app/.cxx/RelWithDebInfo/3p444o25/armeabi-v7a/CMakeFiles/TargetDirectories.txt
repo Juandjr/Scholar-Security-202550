@@ -1,0 +1,2 @@
+C:/Users/USER/Desktop/Scholar-Security_Practicas2-main (1)/Scholar-Security_Practicas2-main/android/app/.cxx/RelWithDebInfo/3p444o25/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/USER/Desktop/Scholar-Security_Practicas2-main (1)/Scholar-Security_Practicas2-main/android/app/.cxx/RelWithDebInfo/3p444o25/armeabi-v7a/CMakeFiles/rebuild_cache.dir
