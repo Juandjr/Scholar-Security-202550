@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
 
 class PushNotificationService {
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -59,11 +60,16 @@ class PushNotificationService {
     try {
       // Push Notifications
       await Firebase.initializeApp();
-      // await requestPermission();
+      print('🔥 Firebase inicializado correctamente');
 
+      // Solicitar permisos de notificación
+      await requestPermission();
       // Token: Token de la app en el dispositivo
       token = await FirebaseMessaging.instance.getToken(); //
-      print('Token1: $token');
+      print('🏆 Firebase Token obtenido:');
+      print('   Token: $token');
+      print('   Token existe: ${token != null ? 'Sí' : 'No'}');
+      print('   Longitud del token: ${token?.length ?? 0}');
 
       // Handlers
       FirebaseMessaging.onBackgroundMessage(
@@ -78,6 +84,33 @@ class PushNotificationService {
       // Manejo de la excepción aquí
       print('Error en la inicialización de FCM: $e');
       // Puedes mostrar un mensaje al usuario o realizar otras acciones aquí
+    }
+  }
+
+  static Future<void> requestPermission() async {
+    try {
+      NotificationSettings settings = await messaging.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      );
+
+      print('🔔 Permisos de notificación:');
+      print('   Estado: ${settings.authorizationStatus}');
+
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+        print('✅ Permisos de notificación concedidos');
+      } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+        print('⚠️ Permisos de notificación provisionales concedidos');
+      } else {
+        print('❌ Permisos de notificación denegados');
+      }
+    } catch (e) {
+      print('💥 Error solicitando permisos de notificación: $e');
     }
   }
 

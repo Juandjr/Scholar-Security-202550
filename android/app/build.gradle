@@ -1,12 +1,9 @@
-import java.util.Properties
-
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'dev.flutter.flutter-gradle-plugin'
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
     id 'com.google.gms.google-services'
 }
-
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -15,50 +12,53 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')?.toInteger() ?: 1
-def flutterVersionName = localProperties.getProperty('flutter.versionName') ?: "1.0"
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
 
 android {
-    namespace "com.vinculacion_espesd.scholar_security"
-    compileSdkVersion 36
+    compileSdk 36
+    ndkVersion "27.0.12077973"
+    namespace "com.paulogalarza.scholarsecurity"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 
     defaultConfig {
-        applicationId "com.vinculacion_espesd.scholar_security"
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId "com.paulogalarza.scholarsecurity"
+        // You can update the following values to match your application needs.
+        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion flutter.minSdkVersion
-        targetSdkVersion 36
-        versionCode flutterVersionCode
+        namespace "com.paulogalarza.scholarsecurity"
+        targetSdkVersion flutter.targetSdkVersion
+        versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
 
     buildTypes {
         release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
         }
-    }
-
-    java {
-        toolchain {
-            languageVersion.set(JavaLanguageVersion.of(17))
-        }
-    }
-
-    kotlin {
-        jvmToolchain {
-            languageVersion.set(JavaLanguageVersion.of(17))
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
     }
 }
 
@@ -67,11 +67,21 @@ flutter {
 }
 
 dependencies {
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
-    implementation platform('com.google.firebase:firebase-bom:33.1.2')
+    // Firebase BOM - gestiona las versiones de todas las librerías de Firebase
+    implementation platform('com.google.firebase:firebase-bom:32.7.4')
+
+    // Firebase Analytics (sin especificar versión, usa BOM)
+    implementation 'com.google.firebase:firebase-analytics'
+
+    // Firebase Cloud Messaging (sin especificar versión, usa BOM)
     implementation 'com.google.firebase:firebase-messaging'
-    implementation 'com.google.firebase:firebase-analytics-ktx:22.0.0'
-    implementation 'androidx.core:core-ktx:1.7.0'
+
+    // AndroidX Core
+    implementation 'androidx.core:core-ktx:1.10.1'
+
+
+
 }
 
+// Aplicar el plugin de Google Services al final
 apply plugin: 'com.google.gms.google-services'

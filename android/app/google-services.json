@@ -1,44 +1,26 @@
 {
   "project_info": {
-    "project_number": "538224676274",
-    "project_id": "notificaiones-f1109",
-    "storage_bucket": "notificaiones-f1109.appspot.com"
+    "project_number": "320341029335",
+    "project_id": "scholar-security-notifications",
+    "storage_bucket": "scholar-security-notifications.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:538224676274:android:03e9fe6f1ede7ac2f028ab",
+        "mobilesdk_app_id": "1:320341029335:android:c8a8db088cc7242bdfdb92",
         "android_client_info": {
-          "package_name": "com.vinculacion_espesd.scholar_security"
+          "package_name": "com.paulogalarza.scholarsecurity"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "538224676274-6dm96dvsaknf5gf1uh7sp672demu4at1.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.vinculacion_espesd.scholar_security",
-            "certificate_hash": "a685c2d10e8664a5560703db989eb6475b977d7c"
-          }
-        },
-        {
-          "client_id": "538224676274-66q03vper7rorc34ndtnb3g7sllclt8n.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAWenvlv2PtIX7KVMyueqLHM4e8pmgRocQ"
+          "current_key": "AIzaSyDdRndKU4G5ESkK6J0TZ4E6nPl_ldbENtc"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "538224676274-66q03vper7rorc34ndtnb3g7sllclt8n.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

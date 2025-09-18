@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps_adv/blocs/blocs.dart';
 import 'package:flutter_maps_adv/blocs/notification/notification_bloc.dart';
 import 'package:flutter_maps_adv/helpers/page_route.dart';
+import 'package:flutter_maps_adv/helpers/sos_test_helper.dart';
 import 'package:flutter_maps_adv/screens/notification_screen.dart';
 import 'package:flutter_maps_adv/screens/screens.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -83,28 +84,48 @@ class _SOSNotificationState extends State<_SOSNotification> {
       lastRequestTime = DateTime.now();
     });
 
-    // Simular un proceso asíncrono, reemplaza esto con tu lógica real
+    // Mostrar información de debugging completa
+    SosTestHelper.showDebugInfo();
 
-    Fluttertoast.showToast(
-        msg:
-            "Se ha enviado una notificación a tus contactos con la hora y fecha ",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: const Color.fromRGBO(219, 31, 31, 1),
-        textColor: Colors.white,
-        fontSize: 16.0);
+    // Ejecutar prueba completa del endpoint
+    print('🚑 === EJECUTANDO ENVÍO DE NOTIFICACIÓN SOS ===');
+    final testResult = await SosTestHelper.testSosEndpoint(lat, lng);
 
-    // Formatear la fecha y hora actual
-    String formattedDateTime =
-        DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
+    // Mostrar toast según el resultado
+    if (testResult['success'] == true) {
+      Fluttertoast.showToast(
+          msg: "✅ Notificación SOS enviada correctamente",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 2,
+          backgroundColor: const Color.fromRGBO(122, 180, 102, 1),
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "❌ Error: ${testResult['error'] ?? 'Error desconocido'}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 3,
+          backgroundColor: const Color.fromRGBO(219, 31, 31, 1),
+          textColor: Colors.white,
+          fontSize: 16.0);
 
-    await widget.authBloc
-        .notificacion(widget.lat, widget.lng, formattedDateTime);
+      print('🔍 Detalles del error:');
+      print('   StatusCode: ${testResult['statusCode']}');
+      print('   Body: ${testResult['rawBody']}');
+    }
+
+    // También ejecutar el método original por compatibilidad
+    String formattedDateTime = DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
+    await widget.authBloc.notificacion(widget.lat, widget.lng, formattedDateTime);
 
     setState(() {
       isRequesting = false;
     });
+
+    print('🚑 === FIN ENVÍO NOTIFICACIÓN SOS ===');
+
   }
 
   @override

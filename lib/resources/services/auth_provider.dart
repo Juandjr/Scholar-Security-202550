@@ -35,29 +35,32 @@ class AuthService {
   Future<bool> login(String email, String password) async {
     try {
       autenticando = true;
+      print('🔑 Iniciando login con Firebase token: ${PushNotificationService.token != null ? 'Sí' : 'No'}');
       final data = {
         'email': email,
         'password': password,
         'tokenApp': PushNotificationService.token
       };
+      print('📤 Datos de login: ${data['email']}, token length: ${PushNotificationService.token?.length ?? 0}');
       final uri = Uri.parse('${Environment.apiUrl}/login');
       final resp = await http.post(uri,
           body: jsonEncode(data),
           headers: {'Content-Type': 'application/json'});
       autenticando = false;
-      // print(resp.body);
+      print('📥 Respuesta de login - Status: ${resp.statusCode}');
       if (resp.statusCode == 200) {
         final loginResponse = loginResponseFromJson(resp.body);
         usuario = loginResponse.usuario;
         ubicaciones = loginResponse.usuario.ubicacion;
         await _guardarToken(loginResponse.token);
+        print('✅ Login exitoso - Token guardado');
         return true;
       } else {
+        print('❌ Error en login: ${resp.body}');
         return false;
       }
     } catch (error) {
-      // Aquí puedes manejar el error de la forma que desees
-      print('Error durante el inicio de sesiónn: $error');
+      print('💥 Error durante el inicio de sesión: $error');
       return false;
     }
   }
@@ -291,20 +294,40 @@ class AuthService {
 
   //usuarios/notificacion
   Future<bool> notificacion(double lat, double lng) async {
-    final data = {
-      'lat': lat,
-      'lng': lng,
-    };
-    final uri = Uri.parse('${Environment.apiUrl}/usuarios/notificacion');
+    try {
+      final token = await getToken();
+      print('🔑 Token obtenido: ${token != null ? 'Sí' : 'No'}');
+      print('🚨 Enviando SOS - Lat: $lat, Lng: $lng');
 
-    final resp = await http.post(uri, body: jsonEncode(data), headers: {
-      'Content-Type': 'application/json',
-      'x-token': await getToken() as String,
-    });
+      final data = {
+        'lat': lat,
+        'lng': lng,
+      };
+      print('📤 Datos a enviar: $data');
 
-    if (resp.statusCode == 200) {
-      return true;
-    } else {
+      final uri = Uri.parse('${Environment.apiUrl}/usuarios/notificacion');
+      print('🌐 URL del endpoint: $uri');
+
+      final resp = await http.post(uri, body: jsonEncode(data), headers: {
+        'Content-Type': 'application/json',
+        'x-token': token as String,
+      });
+
+      print('📥 Respuesta del servidor:');
+      print('   - Status Code: ${resp.statusCode}');
+      print('   - Body: ${resp.body}');
+
+      if (resp.statusCode == 200) {
+        print('✅ Notificación SOS enviada exitosamente');
+        return true;
+      } else {
+        print('❌ Error al enviar notificación SOS: ${resp.statusCode}');
+        print('   Respuesta: ${resp.body}');
+        return false;
+      }
+    } catch (e) {
+      print('💥 Error en notificacion(): $e');
+
       return false;
     }
   }
